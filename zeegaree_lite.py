@@ -105,6 +105,19 @@ class FirstRun(QtCore.QObject):
             firstfile.close()
             if textcheck == "Timer_clicked":
                 return "Timer clicked"
+
+def ConfirmMsgBox():
+    yes = QtGui.QMessageBox.Yes
+    no =  QtGui.QMessageBox.No
+    msgBox = QtGui.QMessageBox(icon=QtGui.QMessageBox.Question)
+    msgBox.setText("Are you sure?")
+    msgBox.setStandardButtons(yes | no)
+    msgBox.setDefaultButton(no)
+    if msgBox.exec_() == yes:
+        return True
+    return False
+
+
 class SystemTrayIcon(QtGui.QSystemTrayIcon):
     
     def __init__(self, icon, parent=None):
@@ -174,7 +187,12 @@ class SystemTrayIcon(QtGui.QSystemTrayIcon):
 
         menu.addSeparator()
    
-        menu.addAction(QtGui.QAction("Quit", self, triggered= app.exit))
+        menu.addAction(QtGui.QAction("Quit", self, triggered=self.onQuit))
+
+    def onQuit(self):
+        if ConfirmMsgBox():
+            app.exit()
+
     
     def iconActivated(self, reason):
         
