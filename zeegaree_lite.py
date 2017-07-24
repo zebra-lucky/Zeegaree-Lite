@@ -293,6 +293,15 @@ class SystemTrayIcon(QtGui.QSystemTrayIcon):
         rootObject.resetTimer()
     
            
+class MainWindow(QtDeclarative.QDeclarativeView):
+    def closeEvent(self, e):
+        if hasattr(self, 'trayIcon'):
+            e.ignore()
+            self.trayIcon.hideMainWindow.trigger()
+
+    def setTrayIcon(self, trayIcon):
+        self.trayIcon = trayIcon
+
 
 if __name__ == '__main__':
 
@@ -303,7 +312,7 @@ if __name__ == '__main__':
         os.makedirs(HOME + "/.config/zeegaree-lite")
     except OSError:
         pass
-    view = QtDeclarative.QDeclarativeView()
+    view = MainWindow()
     view.setSource(QtCore.QUrl(os.path.join(os.path.dirname(__file__),'main.qml')))
     # Fit root object to be able to resize window
     view.setResizeMode(view.SizeRootObjectToView)
@@ -332,6 +341,7 @@ if __name__ == '__main__':
 
     trayIcon.show()
     trayIcon.activated.connect(trayicon.iconActivated)
+    view.setTrayIcon(trayIcon)
     view.show()
 
     sys.exit(app.exec_()) 
