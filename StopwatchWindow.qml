@@ -95,7 +95,6 @@ Rectangle {
             laptimetimer.stop();
             startbutton.start_button_text = "Start";
             startbutton.color = /*"#29C06E"*/ styl.button_back_color_ok;
-            trayicon.onStopwatchResetFromQML()
         }
 
         function getLap()
@@ -276,7 +275,9 @@ Rectangle {
                                 hoverEnabled: true
                                 onEntered: resetbutton.color = styl.button_back_color_notok /*"#C0292F"*/ // czerwony
                                 onExited: resetbutton.color = "#eee"
-                                onClicked: stopwatch.resetStopwatch()
+                                onClicked: {
+                                  trayIcon.onStopwatchReset()
+                                }
                             }
                         }
                     }
@@ -319,7 +320,7 @@ Rectangle {
             }
             buttonimage.source: isActive ? "images/reset_eee.png" : "images/reset_3d3d3d.png"
             button_ma.onClicked: {
-                stopwatch.resetStopwatch()
+                trayIcon.onStopwatchReset()
             }
         }
 

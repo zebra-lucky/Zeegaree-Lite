@@ -106,6 +106,7 @@ class FirstRun(QtCore.QObject):
             if textcheck == "Timer_clicked":
                 return "Timer clicked"
 
+
 def ConfirmMsgBox():
     yes = QtGui.QMessageBox.Yes
     no =  QtGui.QMessageBox.No
@@ -257,6 +258,8 @@ class SystemTrayIcon(QtGui.QSystemTrayIcon):
 
     def onStopwatchReset(self):
         
+        if not ConfirmMsgBox():
+            return
         self.stopwatchMenuStart.setVisible(True)
         self.stopwatchMenuPause.setVisible(False)
         self.stopwatchMenuResume.setVisible(False)
@@ -266,14 +269,6 @@ class SystemTrayIcon(QtGui.QSystemTrayIcon):
         rootObject.resetStopwatch()
         
     @QtCore.Slot()
-    
-    def onStopwatchResetFromQML(self):
-        trayIcon.stopwatchMenuStart.setVisible(True)
-        trayIcon.stopwatchMenuPause.setVisible(False)
-        trayIcon.stopwatchMenuResume.setVisible(False)
-        trayIcon.stopwatchMenuLap.setVisible(False)
-        trayIcon.stopwatchMenuSplit.setVisible(False)
-        trayIcon.stopwatchMenuReset.setVisible(False)
     
     def onStopwatchLap(self):
         rootObject.getLap()
@@ -360,6 +355,7 @@ if __name__ == '__main__':
     context.setContextProperty("somethingtosave", somethingtosave)
     context.setContextProperty("firstrun", firstrun)
     context.setContextProperty("trayicon", trayicon)
+    context.setContextProperty("trayIcon", trayIcon)
     
 
     trayIcon.show()
