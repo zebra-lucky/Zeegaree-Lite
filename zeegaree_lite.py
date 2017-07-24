@@ -179,10 +179,15 @@ class SystemTrayIcon(QtGui.QSystemTrayIcon):
     def iconActivated(self, reason):
         
         if reason == QtGui.QSystemTrayIcon.Trigger:
-            trayIcon.showMainWindow.setVisible(False)
-            trayIcon.hideMainWindow.setVisible(True)
-            view.show()
-            view.activateWindow()
+            if view.isVisible():
+                trayIcon.showMainWindow.setVisible(True)
+                trayIcon.hideMainWindow.setVisible(False)
+                view.hide()
+            else:
+                trayIcon.showMainWindow.setVisible(False)
+                trayIcon.hideMainWindow.setVisible(True)
+                view.show()
+                view.activateWindow()
         
     def onShowMainWindow(self):
         
